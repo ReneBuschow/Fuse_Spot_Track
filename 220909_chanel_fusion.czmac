@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script>
+  <Context>Zen26</Context>
+  <Version>1.0</Version>
+  <Language>Python</Language>
+  <Text>from System.IO import File, Directory, FileInfo, Path
+
+
+path = 'R:\\Data\\Nina'
+files = Directory.GetFiles(path)
+print(files)
+
+for i in range(0, files.Length):
+    file = files[i]
+    file_info = FileInfo(file)
+    print(file_info)
+    image1 = Zen.Application.LoadImage(file_info.FullName, False)
+    image2 = Zen.Processing.Utilities.CreateSubset(image1, "C(1)", False, False)
+    image3 = Zen.Processing.Utilities.CreateSubset(image1, "C(2)", False, False)
+# sum images
+    totals = Zen.Processing.Arithmetics.Addition(image2,image3)
+    images = Zen.Processing.Utilities.AddChannels(image1,totals)
+    images.SetChannelName(0,"red")
+    images.SetChannelName(1,"green")
+    images.SetChannelName(2,"mask")
+# mask Channel color rgb
+    images.SetChannelColor(2,255,255,255)
+# save n clear
+    Zen.Application.Save(images, Path.Combine(path,"Fuse_Ch_"+file_info.Name) , False)
+    Zen.Application.Documents.RemoveAll()
+</Text>
+  <Author></Author>
+  <Description></Description>
+  <Keywords></Keywords>
+  <Row>4</Row>
+  <Column>36</Column>
+</Script>
